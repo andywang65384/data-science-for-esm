@@ -1,5 +1,6 @@
 from PIL import Image
 import sys
+import os
 
 def adjust_width(img, base_width = 1000):
     wpercent = (base_width / float(img.size[0]))
@@ -53,11 +54,16 @@ def merge_institue_image(logo_C, logo_I):
 
     return new_im
 
-logo_TU = Image.open("../logo.png")
-logo_OET = Image.open("logo_OET.png")
-logo_I = Image.open("../logo_int.png")
+# Get the directory where this script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(script_dir)
+
+# Use absolute paths to avoid FileNotFoundError
+logo_TU = Image.open(os.path.join(parent_dir, "logo.png"))
+logo_OET = Image.open(os.path.join(script_dir, "logo_OET.png"))
+logo_I = Image.open(os.path.join(parent_dir, "logo_int.png"))
 
 logo_C = create_contribution_image(logo_TU, logo_OET)
 logo = merge_institue_image(logo_C, logo_I)
 
-logo.save('../logo_merged.png')
+logo.save(os.path.join(parent_dir, 'logo_merged.png'))
